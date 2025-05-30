@@ -1,0 +1,52 @@
+{
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ErrorUnauthorized": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "msg": "No Token specified"
+        }
+      },
+      "ErrorBadRequest": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "msg": "Bad Request"
+        }
+      },
+      "SuccessTrue": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "boolean",
+            "default": true
+          },
+          "type": {
+            "type": "string",
+            "default": "boolean"
+          }
+        },
+        "example": {
+          "data": true,
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

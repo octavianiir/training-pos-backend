@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SwaggerUI" />
+    <title>SwaggerUI</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+  <div id="swagger-ui"></div>
+  <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js" crossorigin></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js" crossorigin></script>
+  <script>
+    window.onload = () => {
+        function logout() {
+          localStorage.removeItem('token');
+          window.location.href = `api-docs-login`; 
+        }
+
+        function addForm() {
+          var downloadUrlWrapper = document.querySelector('.download-url-wrapper');
+          var topbarWrapper = document.querySelector('.topbar-wrapper');
+          if (downloadUrlWrapper) {
+              topbarWrapper.classList.add('justify-between');
+
+              var logoutButton = document.createElement('button');
+
+              logoutButton.textContent = 'Logout'; 
+              logoutButton.setAttribute('id', 'logoutButton'); 
+              logoutButton.classList.add('bg-green-500', 'hover:bg-green-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded', 'focus:outline-none', 'focus:shadow-outline', 'self-end'); // Add 'self-end' class for flex-end alignment
+
+              downloadUrlWrapper.parentNode.replaceChild(logoutButton, downloadUrlWrapper);
+
+              logoutButton.addEventListener('click', function(event) {
+                  event.preventDefault(); 
+
+                  logout();
+              });
+          }
+        }
+      window.ui = SwaggerUIBundle({
+        url: "/api-docs-json",
+        dom_id: '#swagger-ui',
+        explore:false,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout",
+        onComplete:()=>{
+            addForm()
+        }
+      });
+    };
+  </script>
+  </body>
+</html>
