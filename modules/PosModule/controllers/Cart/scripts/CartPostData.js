@@ -10,7 +10,7 @@ module.exports = async (db = null, data = []) => {
   let dbmodel = models;
   if (db) dbmodel = db.models;
 
-  const fieldPointer = ["product_id","quantity"];
+  const fieldPointer = ["product_id","user_id","quantity"];
   const table = TB_CART;
 
   try {

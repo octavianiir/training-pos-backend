@@ -1,7 +1,7 @@
 const { models } = require("../../../../../database/Sequelize");
 const { ERROR_WRONG_FORMAT, ERROR_NO_DATA } = require("../../../../../utils/Constants/ErrorMessage");
 const Loggers = require("../../../../../utils/Loggers");
-const { TB_PRODUCT } = require("../../../constants/TableConstants");
+const { TB_ROLES } = require("../../../constants/TableConstants");
 
 module.exports = async (db = null, data = []) => {
   let dbmodel = models;
@@ -14,17 +14,12 @@ module.exports = async (db = null, data = []) => {
     let promises = [];
     data.forEach(async (e) => {
       let putData = {...e};
-      console.log(e.id)
-      console.log(putData[0])
-      promises.push(dbmodel[TB_PRODUCT].update(putData, { where: { id: e.id } }));
+      promises.push(dbmodel[TB_ROLES].update(putData, { where: { id: e.id } }));
     });
 
-
     const result = await Promise.all(promises);
-    if (!result) throw "Failed to update product";
+    if (!result) throw "Failed to update users";
     
-
-    console.log(result)
     return true;
   } catch (error) {
     Loggers.error(__filename, error);

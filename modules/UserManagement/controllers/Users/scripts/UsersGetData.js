@@ -1,8 +1,7 @@
 const { QueryTypes } = require("sequelize");
 const { connection } = require("../../../../../database/Sequelize");
 const Loggers = require("../../../../../utils/Loggers");
-const { TB_CART, TB_PRODUCT } = require("../../../constants/TableConstants");
-const { TB_USERS } = require("../../../../UserManagement/constants/TableConstants");
+const { TB_USERS } = require("../../../constants/TableConstants");
 // const { ERROR_WRONG_FORMAT } = require("../../../../../utils/Constants/ErrorMessage");
 
 module.exports = async (db = null, filter = {}) => {
@@ -16,40 +15,24 @@ module.exports = async (db = null, filter = {}) => {
     let replacements = [];
     let groupbyclause = "";
 
-    selectclause = `${TB_CART}.id
-      , ${TB_CART}.product_id
-      , ${TB_CART}.quantity
-      , ${TB_USERS}.id
+    selectclause = `${TB_USERS}.id
       , ${TB_USERS}.username
-      , ${TB_PRODUCT}.product_name
-      , ${TB_PRODUCT}.product_price`;
-
-    
-    joinclause += `
-      LEFT JOIN ${TB_PRODUCT}
-        ON ${TB_PRODUCT}.id = ${TB_CART}.product_id
-      LEFT JOIN ${TB_USERS}
-        ON ${TB_USERS}.id = ${TB_CART}.user_id`;
+      , ${TB_USERS}.password
+      , ${TB_USERS}.name
+      , ${TB_USERS}.role_id`;
 
     if (filter.id) {
-      whereclause += ` AND ${TB_CART}.id = ?`;
+      whereclause += ` AND ${TB_USERS}.id = ?`;
       replacements.push(filter.id);
-    }
-
-    
-    if (filter.product_id) {
-      whereclause += ` AND ${TB_CART}.product_id = ?`;
-      replacements.push(filter.product_id);
     }
 
     let sql =  `SELECT
       ${selectclause}
-    FROM ${TB_CART}
-    ${joinclause}
+    FROM ${TB_USERS}
     WHERE 1=1 ${whereclause}`;
 
     let result = await dbconn.query(sql, { replacements, type: QueryTypes.SELECT, raw: true });
-    if (!result) throw "Failed to fetch cart";
+    if (!result) throw "Failed to fetch product";
     if (filter.id) return result[0] ?? {};
     return result;
   } catch (error) {

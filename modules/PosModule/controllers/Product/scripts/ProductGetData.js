@@ -17,7 +17,9 @@ module.exports = async (db = null, filter = {}) => {
 
     selectclause = `${TB_PRODUCT}.id
       , ${TB_PRODUCT}.product_name
-      , ${TB_PRODUCT}.product_price`;
+      , ${TB_PRODUCT}.product_price
+      , ${TB_PRODUCT}.product_description
+      , ${TB_PRODUCT}.product_image`;
 
     if (filter.id) {
       whereclause += ` AND ${TB_PRODUCT}.id = ?`;

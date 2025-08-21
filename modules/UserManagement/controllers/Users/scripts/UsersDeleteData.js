@@ -1,7 +1,7 @@
 const { models } = require("../../../../../database/Sequelize");
 const { ERROR_WRONG_FORMAT, ERROR_NO_DATA } = require("../../../../../utils/Constants/ErrorMessage");
 const Loggers = require("../../../../../utils/Loggers");
-const { TB_PRODUCT } = require("../../../constants/TableConstants");
+const { TB_USERS } = require("../../../constants/TableConstants");
 
 module.exports = async (db = null, data = []) => {
   let dbmodel = models;
@@ -10,22 +10,10 @@ module.exports = async (db = null, data = []) => {
   try {
     if (!Array.isArray(data)) throw ERROR_WRONG_FORMAT;
     if (data.length == 0) throw ERROR_NO_DATA;
-
-    let promises = [];
-    data.forEach(async (e) => {
-      let putData = {...e};
-      console.log(e.id)
-      console.log(putData[0])
-      promises.push(dbmodel[TB_PRODUCT].update(putData, { where: { id: e.id } }));
-    });
-
-
-    const result = await Promise.all(promises);
-    if (!result) throw "Failed to update product";
-    
-
-    console.log(result)
-    return true;
+    const ids = data.map(e => e.id);
+    const result = await dbmodel[TB_USERS].destroy({ where: { id: ids } });
+    if (!result) throw "Failed to delete users";
+    return result;
   } catch (error) {
     Loggers.error(__filename, error);
     return {error};
